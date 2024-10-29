@@ -64,9 +64,21 @@ struct ReportsListView: View {
                 }
             }
             SearchView(searchText: $searchPhrase)
-            
+            List{
+                ForEach(viewModel.reports, content: {
+                ReportListItemView(report: $0)
+                })
+                .listRowSeparator(.hidden)
+            }
+            .listStyle(.plain)
+            .foregroundStyle(.black)
         }
         .frame(maxHeight: .infinity, alignment: .top)
+        .onAppear{
+            Task{
+                await viewModel.fetchAllReports()
+            }
+        }
     }
     
 }
