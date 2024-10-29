@@ -9,97 +9,64 @@ import SwiftUI
 
 struct ReportsListView: View {
     @StateObject private var viewModel = ReportListViewModel()
-    @State private var showCreationView = false
-    
-    //TODO: delete asap
-    @State private var logoutPressed = false
-    
-    @State private var path = NavigationPath()
-    
+    @State private var searchPhrase = ""
     var body: some View {
-        
-        ZStack (alignment: .bottom){
-            NavigationStack(path: $path){
-                List{
-                    ForEach($viewModel.reports){ report in
-                        Button(action: {
-                            path.append(report.wrappedValue)
-                        }, label: {
-                            VStack{
-                                Image(systemName: "person")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(maxWidth: .infinity, maxHeight: 150)
-                                    .padding(20)
-                                Text(report.wrappedValue.title)
-                                HStack {
-                                    Text(report.wrappedValue.description)
-                                    Spacer()
-                                    Text(report.wrappedValue.location)
-                                }
-                                .padding()
-                            }
-                            .frame(height: 200)
-                            .background(.pink)
-                            .cornerRadius(20)
-                            
-                        })
-                        .listRowBackground(Color.clear)
-                        .listRowSeparator(.hidden)
-                        .foregroundStyle(.black)
-                    }
-                }
-                .navigationTitle("All Problems")
-                .onAppear{
-                    Task{
-                        await viewModel.fetchAllReports()
-                    }
-                }
-                .refreshable{
-                    Task{
-                        await viewModel.fetchAllReports()
-                    }
-                }
-                .navigationDestination(for: ReportDetails.self, destination:{report in
-                    @State var reportBinding = report
-                    ReportReviewView(currentReport: $reportBinding)
-                })
-            }
-            Section {
-                HStack{
-                    Button(action: {
-                        showCreationView = true
-                    }){
-                        VStack{
-                            Image(systemName: "plus")
-                            Text("Create")
+        VStack(alignment: .leading){
+            Text("Good afternoon,\nUserName!")
+                .font(.title)
+                .fontWeight(.bold)
+                .padding(.horizontal)
+            //TODO: Remake on SigleViews with api call
+            ScrollView(.horizontal, showsIndicators: false){
+                HStack(spacing: 20){
+                    VStack(alignment: .leading){
+                        HStack{
+                            Text("100")
+                                .font(.title)
+                                .fontWeight(.bold)
+                            Text("reports")
+                                .foregroundStyle(.gray)
                         }
-                    }.padding(.trailing, 50)
+                        Text("Accepted")
+                    }
+                    .padding()
+                    .background(.ultraThinMaterial)
+                    .cornerRadius(20)
+                    .padding(.leading)
                     
-                    Button(action: {
-                        UserDefaults.standard.removeObject(forKey: "userId")
-                        logoutPressed = true
-                    }){
-                        VStack{
-                            Image(systemName: "chevron.right")
-                            Text("Logout")
+                    VStack(alignment: .leading){
+                        HStack{
+                            Text("18")
+                                .font(.title)
+                                .fontWeight(.bold)
+                            Text("reports")
+                                .foregroundStyle(.gray)
                         }
-                        .foregroundStyle(.red)
+                        Text("In Progress")
                     }
+                    .padding()
+                    .background(.ultraThinMaterial)
+                    .cornerRadius(20)
+                    
+                    VStack(alignment: .leading){
+                        HStack{
+                            Text("25")
+                                .font(.title)
+                                .fontWeight(.bold)
+                            Text("reports")
+                                .foregroundStyle(.gray)
+                        }
+                        Text("In Queue")
+                    }
+                    .padding()
+                    .background(.ultraThinMaterial)
+                    .cornerRadius(20)
                 }
-                .padding()
-                .background(.white)
-                .cornerRadius(20)
             }
-            .shadow(radius: 20)
+            SearchView(searchText: $searchPhrase)
+            
         }
-        .fullScreenCover(isPresented: $logoutPressed, content: {
-            AuthorizationView()
-        })
-        .fullScreenCover(isPresented: $showCreationView, content: {
-            ReportCreationView(isShown: $showCreationView, reportListViewModel: viewModel)
-        })
-        .frame(maxHeight: .infinity)
+        .frame(maxHeight: .infinity, alignment: .top)
     }
     
 }
