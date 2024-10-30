@@ -18,13 +18,14 @@ struct SearchView: View {
             }
             .padding()
             .background(.ultraThinMaterial)
-            .cornerRadius(20)
+            .cornerRadius(45)
             Image(systemName: "slider.horizontal.3")
                 .frame(width: 50, height: 50)
                 .background(.ultraThinMaterial)
                 .cornerRadius(45)
         }
-        .padding()
+        .padding(.horizontal)
+        .padding(.top)
     }
 }
 
