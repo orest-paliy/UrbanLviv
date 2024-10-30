@@ -6,94 +6,123 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct ReportCreationView: View {
     @StateObject private var viewModel = ReportCreationViewModel()
+    @Binding var isViewShown: Bool
     
     @State private var title: String = ""
     @State private var description: String = ""
-    @State private var image: String = ""
+    @State var imageSelection: PhotosPickerItem? = nil
+    @State var uiImage: UIImage? = nil
     @State private var typeOfProblem: ProblemType = .OTHER
-    @State private var creatorId: Int = 1
+    @State private var priority: ProblemPriority = .low
     @State private var location: String = ""
-    @State private var allFieldsWereValidated = false
-    
-    @State private var needToBeValidated = false
-    
-    @Binding var isShown: Bool
-    @ObservedObject var reportListViewModel: ReportListViewModel
     
     var body: some View {
-        VStack(spacing: 10){
-            Label("Нова скарга", systemImage: "keyboard")
-                .font(.title3)
-                .padding(.top)
-            VStack{
-                
-                StyledTextField(title: "Назва проблеми",
-                                value: $title,
-                                needToBeSecured: false,
-                                textFieldType: .other,
-                                needToBeValidated: $needToBeValidated)
-                StyledTextField(title: "Опис",
-                                value: $description,
-                                needToBeSecured: false,
-                                textFieldType: .other,
-                                needToBeValidated: $needToBeValidated)
-                StyledTextField(title: "Місцезнаходження",
-                                value:  $location,
-                                needToBeSecured: false,
-                                textFieldType: .other,
-                                needToBeValidated: $needToBeValidated)
-            }
-            .padding()
-            
-            Form {
-                Picker("Тип проблеми", selection: $typeOfProblem) {
-                    ForEach(ProblemType.allCases, id: \.self) { problem in
-                        Text(problem.title)
+        VStack{
+            ScrollView{
+                VStack(alignment: .leading){
+                    Text("Tell us what problem you've faced")
+                        .font(.title3)
+                        .fontWeight(.bold)
+                    
+                    Text("Name of problem")
+                        .padding(.top)
+                    TextField("E.g. Water Leakage", text: $title)
+                        .padding()
+                        .background(.ultraThinMaterial)
+                        .cornerRadius(45)
+                    
+                    Text("Description of problem")
+                        .padding(.top)
+                    TextField("E.g. Water Leakage happend in..", text: $description)
+                        .padding()
+                        .background(.ultraThinMaterial)
+                        .cornerRadius(45)
+                    
+                    Text("Problem type")
+                        .padding(.top)
+                    HStack {
+                        Picker("Problem Type", selection: $typeOfProblem) {
+                            ForEach(ProblemType.allCases, id: \.self, content: {
+                                Text($0.title).tag($0)
+                            })
+                        }
+                        .accentColor(.gray)
                     }
+                    .padding(10)
+                    .frame(maxWidth: .infinity)
+                    .background(.ultraThinMaterial)
+                    .cornerRadius(45)
+                    
+                    Text("Priority")
+                        .padding(.top)
+                    HStack{
+                        PriorityView(selectedPriority: $priority, priority: .low)
+                        PriorityView(selectedPriority: $priority, priority: .medium)
+                        PriorityView(selectedPriority: $priority, priority: .high)
+                        PriorityView(selectedPriority: $priority, priority: .urgent)
+                    }
+                    .frame(maxWidth: .infinity)
+                    
+                    Text("Image")
+                        .padding(.top)
+                    
+                    ZStack{
+                        Image(uiImage: uiImage ?? UIImage())
+                            .resizable()
+                            .scaledToFill()
+                            .frame(maxWidth: .infinity, maxHeight: 170)
+                            .clipped()
+                            .background(.ultraThinMaterial)
+                            .cornerRadius(20)
+                            .allowsHitTesting(uiImage != nil)
+                        if uiImage == nil{
+                            PhotosPicker(
+                                selection: $imageSelection,
+                                matching: .images,
+                                photoLibrary: .shared()) {
+                                    Image(systemName: "camera.viewfinder")
+                                        .font(.system(size: 50))
+                                        .foregroundColor(.gray)
+                                }
+                        }
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: 170)
                 }
             }
-            .frame(maxHeight: 100)
             
             Button(action: {
-                createNewReport()
+                Task{
+                    try? await viewModel.createReport(title: title, description: description, image: uiImage, typeOfProblem: typeOfProblem.rawValue, location: location)
+                    isViewShown = false
+                }
             }, label: {
-                Text("Create New Report")
-                    .frame(maxWidth: .infinity)
-                    .foregroundColor(.white)
-                    .padding()
-                    .background(allFieldsWereValidated ? .blue : .gray)
-                    .cornerRadius(20)
+                Text("Create A Report")
+                    .foregroundStyle(.white)
+                    .fontWeight(.heavy)
             })
             .padding()
+            .frame(maxWidth: .infinity)
+            .background(.black)
+            .cornerRadius(45)
+            .padding(.top)
+
         }
-        .background(.gray.opacity(0.1))
-        .cornerRadius(20)
-        .padding()
-    }
-    
-    private func createNewReport() {
-        Task {
-            do {
-                await viewModel.createReport(
-                    title: title,
-                    description: description,
-                    image: image,
-                    typeOfProblem: typeOfProblem.rawValue,
-                    location: location
-                )
-                isShown = false
-                await reportListViewModel.fetchAllReports() // Оновлення списку
-            } catch {
-                // Обробка помилок (можна вивести повідомлення)
-                print("Error creating report: \(error)")
+        .onChange(of: imageSelection) {
+            Task {
+                if let data = try? await imageSelection?.loadTransferable(type: Data.self) {
+                    uiImage = UIImage(data:data)
+                    return
+                }
             }
         }
+        .padding()
     }
 }
 
 #Preview {
-    ReportCreationView(isShown: .constant(true), reportListViewModel: ReportListViewModel())
+    ReportCreationView(isViewShown: .constant(true))
 }

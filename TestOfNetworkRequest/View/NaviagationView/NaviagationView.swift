@@ -9,9 +9,9 @@ import SwiftUI
 
 struct NaviagationView: View {
     @State private var selectedPage: NavigationItems = .homePage
+    @State private var isNewReportViewShown = false
     var body: some View {
         ZStack{
-            
             switch selectedPage {
             case .homePage:
                 ReportsListView()
@@ -20,7 +20,10 @@ struct NaviagationView: View {
             case .infoPage:
                 Text("InfoPage")
             case .createReportPage:
-                Text("NewReportCreationView")
+                Text("").onAppear{
+                    isNewReportViewShown = true
+                    selectedPage = .homePage
+                }
             }
             
             HStack(spacing: 15){
@@ -38,6 +41,9 @@ struct NaviagationView: View {
             .frame(maxHeight: .infinity, alignment: .bottom)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .fullScreenCover(isPresented: $isNewReportViewShown, content: {
+            ReportCreationView(isViewShown: $isNewReportViewShown)
+        })
     }
 }
 
