@@ -9,36 +9,68 @@ import SwiftUI
 
 struct ReportListItemView: View {
     var report: ReportDetails
+    
+    var date: String?{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"
+        if let date = dateFormatter.date(from: report.timeOfCreation){
+            let outputFormatter = DateFormatter()
+            outputFormatter.dateFormat = "dd MMMM yyyy"
+            outputFormatter.locale = Locale(identifier: "uk_UA")
+            let formatedDate = outputFormatter.string(from: date)
+            return formatedDate
+        }
+        return nil
+    }
+    
     @State var isDescriptionShown = false
     var body: some View {
         VStack{
             ZStack{
-                AsyncImage(url: URL(string: report.imageUrl), content: {image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: 175)
-                        .cornerRadius(20)
-                        .padding(.horizontal)
-                    
-                }, placeholder: {
+//                AsyncImage(url: URL(string: report.imageUrl), content: {image in
+//                    image
+//                        .resizable()
+//                        .aspectRatio(contentMode: .fill)
+//                        .frame(height: 175)
+//                        .cornerRadius(20)
+//                        .padding(.horizontal)
+//                    
+//                }, placeholder: {
+//                    ProgressView()
+//                        .frame(maxWidth: .infinity)
+//                        .frame(height: 175)
+//                        .background(.ultraThinMaterial)
+//                        .cornerRadius(20)
+//                        .padding(.horizontal)
+//                })
+//                .frame(maxWidth: .infinity)
+                
+                if image == nil{
                     ProgressView()
                         .frame(maxWidth: .infinity)
                         .frame(height: 175)
                         .background(.ultraThinMaterial)
                         .cornerRadius(20)
                         .padding(.horizontal)
-                })
-                .frame(maxWidth: .infinity)
+                }else{
+                    Image(uiImage: image ?? UIImage())
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(height: 175)
+                        .cornerRadius(20)
+                        .padding(.horizontal)
+                }
                 
                 HStack{
                     Text(ProblemType(rawValue: report.typeOfProblem)?.title ?? ProblemType.OTHER.title)
-                        .padding(5)
+                        .padding(.vertical, 5)
+                        .padding(.horizontal, 10)
                         .font(.subheadline)
                         .background(.white)
                         .cornerRadius(20)
                     Text(ProblemPriority(rawValue: report.priority)?.title ?? ProblemPriority.low.title)
-                        .padding(5)
+                        .padding(.vertical, 5)
+                        .padding(.horizontal, 10)
                         .font(.subheadline)
                         .background(.white)
                         .cornerRadius(20)
@@ -70,16 +102,26 @@ struct ReportListItemView: View {
                     .lineLimit(5)
             }
             
-            HStack(alignment: .center){
-                Label(report.timeOfCreation, systemImage: "clock")
+            VStack(alignment: .leading){
                 Label(report.location, systemImage: "mappin.and.ellipse")
-                Label(report.isDone ? "Done" : "In Progress",
-                      systemImage: report.isDone ? "checkmark" : "progress.indicator")
+                if let date = date{
+                    Label(date, systemImage: "clock")
+                }
             }
             .lineLimit(1)
             .font(.subheadline)
             .padding(.top, 5)
             .padding(.horizontal)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+    
+    var image: UIImage?{
+        if let imageData = Data(base64Encoded: report.imageUrl),
+           let image = UIImage(data: imageData){
+            return image
+        }else{
+            return nil
         }
     }
 }

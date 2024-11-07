@@ -29,35 +29,35 @@ enum ProblemType: Int, CaseIterable{
     var title: String {
             switch self {
             case .ROADS:
-                return "Проблеми з дорогами"
+                return "Дороги"
             case .GARBAGE:
-                return "Проблеми з сміттям"
+                return "Сміття"
             case .CRIME:
                 return "Кримінальні ситуації"
             case .ELECTRICITY:
-                return "Проблеми з електропостачанням"
+                return "Елекропостачання"
             case .WATER_SUPPLY:
-                return "Проблеми з водопостачанням"
+                return "Водопостачання"
             case .SEWAGE:
-                return "Проблеми з каналізацією"
+                return "Каналізація"
             case .PARKS:
                 return "Проблеми у парках"
             case .STREET_LIGHTING:
-                return "Несправність вуличного освітлення"
+                return "Вуличне освітлення"
             case .NOISE:
                 return "Шумове забруднення"
             case .TRAFFIC:
-                return "Проблеми з дорожнім рухом"
+                return "Доорожній рух"
             case .ENVIRONMENT:
                 return "Екологічні проблеми"
             case .PUBLIC_TRANSPORT:
-                return "Проблеми з громадським транспортом"
+                return "Громадський транспорт"
             case .INFRASTRUCTURE:
-                return "Проблеми з міською інфраструктурою"
+                return "Міська інфрастроктура"
             case .HEALTH:
                 return "Проблеми зі здоров’ям"
             case .ANIMAL_CONTROL:
-                return "Проблеми з безпритульними тваринами"
+                return "Безпритульні тварини"
             case .FIRE_HAZARD:
                 return "Пожежна небезпека"
             case .OTHER:

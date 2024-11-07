@@ -14,7 +14,7 @@ final class RequestsNetworkService{
         endPoint = "http://\(hostId)/api/Report"
     }
     
-    private let hostId = "3.87.172.119"
+    private let hostId = "6d98-2a02-2378-1061-e4f1-d821-b5ad-5aa4-52be.ngrok-free.app"
     private let endPoint: String
     
     func getAllReports() async throws -> [ReportDetails]{

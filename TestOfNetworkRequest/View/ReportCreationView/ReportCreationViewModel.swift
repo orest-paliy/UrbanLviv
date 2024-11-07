@@ -5,26 +5,31 @@
 //  Created by Orest Palii on 18.10.2024.
 //
 
-import Foundation
+import SwiftUI
 
-@MainActor
 final class ReportCreationViewModel: ObservableObject{
-    
-    @Published var error: NetworkError?
     
     public func createReport(
         title: String,
         description: String,
-        image: String,
+        image: UIImage?,
         typeOfProblem: Int,
         location: String
-    )async{
+    )async throws{
+        guard let image = image,
+                let jpegData = image.jpegData(compressionQuality: 0.5)
+        else {
+            throw NetworkError.BadData
+        }
+        
+        let base64StringImage = jpegData.base64EncodedString()
         let creatorId = AuthorizationService.shared.getUserId()
-        let newReport = ReportCreationModel(title: title, description: description, image: image, typeOfProblem: typeOfProblem, creatorId: creatorId, location: location)
+        let newReport = ReportCreationModel(title: title, description: description, image: base64StringImage, typeOfProblem: typeOfProblem, creatorId: creatorId, location: location)
+        
         do{
             try await RequestsNetworkService.shared.createNewReport(newReport: newReport)
         }catch{
-            self.error = error as? NetworkError
+            throw NetworkError.UnknownError
         }
     }
 }

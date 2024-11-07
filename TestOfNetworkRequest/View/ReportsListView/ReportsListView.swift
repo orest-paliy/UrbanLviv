@@ -10,6 +10,7 @@ import SwiftUI
 struct ReportsListView: View {
     @StateObject private var viewModel = ReportListViewModel()
     @State private var searchPhrase = ""
+    @State private var selectedGroupOfreports = ReportsListGroupSelectorView.SearchGroup.all
     var body: some View {
         VStack(alignment: .leading){
             Text("Good afternoon,\nUserName!")
@@ -63,7 +64,28 @@ struct ReportsListView: View {
                     .cornerRadius(20)
                 }
             }
+            .refreshable {
+                Task{
+                    await viewModel.fetchAllReports()
+                    searchPhrase = ""
+                }
+            }
             SearchView(searchText: $searchPhrase)
+                .onChange(of: searchPhrase){
+                    viewModel.fetchByName(searchPhrase: searchPhrase, group: selectedGroupOfreports)
+                }
+            HStack(spacing: 20){
+                ReportsListGroupSelectorView(selectedGroup: $selectedGroupOfreports, typeOfGroup: .all)
+                ReportsListGroupSelectorView(selectedGroup: $selectedGroupOfreports, typeOfGroup: .inProgress)
+                ReportsListGroupSelectorView(selectedGroup: $selectedGroupOfreports, typeOfGroup: .done)
+                ReportsListGroupSelectorView(selectedGroup: $selectedGroupOfreports, typeOfGroup: .createdByYou)
+            }
+            .onChange(of: selectedGroupOfreports){
+                viewModel.fetchByName(searchPhrase: searchPhrase, group: selectedGroupOfreports)
+            }
+            .frame(maxWidth: .infinity)
+            .padding()
+            
             List{
                 ForEach(viewModel.reports, content: {
                 ReportListItemView(report: $0)
@@ -72,6 +94,7 @@ struct ReportsListView: View {
             }
             .listStyle(.plain)
             .foregroundStyle(.black)
+            .padding(.top, -10)
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .onAppear{
