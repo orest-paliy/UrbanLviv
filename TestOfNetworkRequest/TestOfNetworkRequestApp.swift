@@ -12,7 +12,7 @@ struct TestOfNetworkRequestApp: App {
     var body: some Scene {
         WindowGroup {
             if AuthorizationService.shared.isUserLoggined(){
-                ReportsListView()
+                CustomNaviagationView()
             }else{
                 AuthorizationView()
             }

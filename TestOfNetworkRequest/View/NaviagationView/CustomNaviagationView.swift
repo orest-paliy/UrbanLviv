@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NaviagationView: View {
+struct CustomNaviagationView: View {
     @State private var selectedPage: NavigationItems = .homePage
     @State private var isNewReportViewShown = false
     var body: some View {
@@ -18,7 +18,7 @@ struct NaviagationView: View {
             case .accountPage:
                 Text("profilePage")
             case .infoPage:
-                Text("InfoPage")
+                InfoView()
             case .createReportPage:
                 Text("").onAppear{
                     isNewReportViewShown = true
@@ -48,5 +48,5 @@ struct NaviagationView: View {
 }
 
 #Preview {
-    NaviagationView()
+    CustomNaviagationView()
 }

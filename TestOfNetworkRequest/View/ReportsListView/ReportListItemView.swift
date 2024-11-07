@@ -27,23 +27,39 @@ struct ReportListItemView: View {
     var body: some View {
         VStack{
             ZStack{
-                AsyncImage(url: URL(string: report.imageUrl), content: {image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: 175)
-                        .cornerRadius(20)
-                        .padding(.horizontal)
-                    
-                }, placeholder: {
+//                AsyncImage(url: URL(string: report.imageUrl), content: {image in
+//                    image
+//                        .resizable()
+//                        .aspectRatio(contentMode: .fill)
+//                        .frame(height: 175)
+//                        .cornerRadius(20)
+//                        .padding(.horizontal)
+//                    
+//                }, placeholder: {
+//                    ProgressView()
+//                        .frame(maxWidth: .infinity)
+//                        .frame(height: 175)
+//                        .background(.ultraThinMaterial)
+//                        .cornerRadius(20)
+//                        .padding(.horizontal)
+//                })
+//                .frame(maxWidth: .infinity)
+                
+                if image == nil{
                     ProgressView()
                         .frame(maxWidth: .infinity)
                         .frame(height: 175)
                         .background(.ultraThinMaterial)
                         .cornerRadius(20)
                         .padding(.horizontal)
-                })
-                .frame(maxWidth: .infinity)
+                }else{
+                    Image(uiImage: image ?? UIImage())
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(height: 175)
+                        .cornerRadius(20)
+                        .padding(.horizontal)
+                }
                 
                 HStack{
                     Text(ProblemType(rawValue: report.typeOfProblem)?.title ?? ProblemType.OTHER.title)
@@ -87,19 +103,25 @@ struct ReportListItemView: View {
             }
             
             VStack(alignment: .leading){
-                HStack{
-                    if let date = date{
-                        Label(date, systemImage: "clock")
-                    }
-                    Label(report.isDone ? "Done" : "In Progress",
-                          systemImage: report.isDone ? "checkmark" : "progress.indicator")
-                }
                 Label(report.location, systemImage: "mappin.and.ellipse")
+                if let date = date{
+                    Label(date, systemImage: "clock")
+                }
             }
             .lineLimit(1)
             .font(.subheadline)
             .padding(.top, 5)
             .padding(.horizontal)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+    
+    var image: UIImage?{
+        if let imageData = Data(base64Encoded: report.imageUrl),
+           let image = UIImage(data: imageData){
+            return image
+        }else{
+            return nil
         }
     }
 }

@@ -64,6 +64,12 @@ struct ReportsListView: View {
                     .cornerRadius(20)
                 }
             }
+            .refreshable {
+                Task{
+                    await viewModel.fetchAllReports()
+                    searchPhrase = ""
+                }
+            }
             SearchView(searchText: $searchPhrase)
                 .onChange(of: searchPhrase){
                     viewModel.fetchByName(searchPhrase: searchPhrase, group: selectedGroupOfreports)

@@ -18,7 +18,7 @@ final class ReportListViewModel: ObservableObject{
             reports = fetchByGroup(group: group)
         }else{
             reports = fetchByGroup(group: group).filter{
-                $0.title.contains(searchPhrase)
+                $0.title.contains(searchPhrase.lowercased())
             }
         }
     }
