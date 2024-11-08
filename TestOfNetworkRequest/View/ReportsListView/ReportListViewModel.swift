@@ -11,6 +11,8 @@ import Foundation
 final class ReportListViewModel: ObservableObject{
     @Published var reports: [ReportDetails] = []
     @Published var errorMessage: NetworkError?
+    @Published var isDataLoaded: Bool = false
+
     
     private var notChangingReportsArray: [ReportDetails] = []
     func fetchByName(searchPhrase: String, group: ReportsListGroupSelectorView.SearchGroup){
@@ -43,6 +45,7 @@ final class ReportListViewModel: ObservableObject{
             let reports = try await RequestsNetworkService.shared.getAllReports()
             notChangingReportsArray = reports
             self.reports = notChangingReportsArray
+            isDataLoaded = true
         }catch{
             self.errorMessage = error as? NetworkError
         }

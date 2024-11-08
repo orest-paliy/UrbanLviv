@@ -45,10 +45,10 @@ extension ReportDetails{
         id = 0
         title = "title"
         description = "somedescription"
-        imageUrl = ""
+        imageUrl = "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg"
         typeOfProblem = 1
         creatorId = 1
-        location = "location"
+        location = "Митна площа"
         timeOfCreation = "2024-11-08T12:28:05.8267314+02:00"
         priority = "medium"
         isDone = false

@@ -52,6 +52,11 @@ struct ReportCreationView: View {
                             .background(Color(uiColor: .secondarySystemBackground))
                             .cornerRadius(45)
                         
+                        Text("Location")
+                            .padding(.top)
+                            .foregroundStyle(Color(uiColor: .secondaryLabel))
+                        LocationSearchView(query: $location)
+                        
                         Text("Problem type")
                             .padding(.top)
                             .foregroundStyle(Color(uiColor: .secondaryLabel))
@@ -67,17 +72,6 @@ struct ReportCreationView: View {
                         .frame(maxWidth: .infinity)
                         .background(Color(uiColor: .secondarySystemBackground))
                         .cornerRadius(45)
-                        
-                        Text("Priority")
-                            .padding(.top)
-                            .foregroundStyle(Color(uiColor: .secondaryLabel))
-                        HStack{
-                            PriorityView(selectedPriority: $priority, priority: .low)
-                            PriorityView(selectedPriority: $priority, priority: .medium)
-                            PriorityView(selectedPriority: $priority, priority: .high)
-                            PriorityView(selectedPriority: $priority, priority: .urgent)
-                        }
-                        .frame(maxWidth: .infinity)
                         
                         Text("Image")
                             .padding(.top)
@@ -135,7 +129,7 @@ struct ReportCreationView: View {
                 }
             }
             .padding()
-            .blur(radius: isReportCreationEndingShown ? 15 : 0)
+            .blur(radius: isReportCreationEndingShown ? 20 : 0)
             
             if isReportCreationEndingShown{
                 VStack(spacing: 16){
@@ -152,9 +146,10 @@ struct ReportCreationView: View {
                     }
                     .padding()
                     .padding(.horizontal, 32)
-                    .background(.black)
+                    .background(.white)
                     .cornerRadius(45)
-                    .foregroundStyle(.white)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.black)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }

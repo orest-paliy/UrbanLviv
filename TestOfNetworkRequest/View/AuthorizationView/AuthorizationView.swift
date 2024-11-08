@@ -93,7 +93,7 @@ struct AuthorizationView: View {
             .padding(.bottom)
         }
         .fullScreenCover(isPresented: $succesfullyAuthorized, content: {
-            ReportsListView()
+            CustomNaviagationView()
         })
         .background(Color(uiColor: .secondarySystemBackground))
         .cornerRadius(45)
@@ -109,4 +109,5 @@ struct AuthorizationView: View {
 
 #Preview {
     AuthorizationView()
+    
 }

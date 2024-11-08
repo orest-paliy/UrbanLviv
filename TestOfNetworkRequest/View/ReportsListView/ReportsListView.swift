@@ -11,6 +11,9 @@ struct ReportsListView: View {
     @StateObject private var viewModel = ReportListViewModel()
     @State private var searchPhrase = ""
     @State private var selectedGroupOfreports = ReportsListGroupSelectorView.SearchGroup.all
+    
+    @Binding var path: NavigationPath
+    
     var body: some View{
         VStack(alignment: .leading){
             //TODO: Remake on SigleViews with api call
@@ -18,7 +21,7 @@ struct ReportsListView: View {
                 HStack(spacing: 20){
                     VStack(alignment: .leading){
                         HStack{
-                            Text("100")
+                            Text("\(viewModel.reports.filter({!$0.isDone}).count)")
                                 .font(.title)
                                 .fontWeight(.bold)
                             Text("reports")
@@ -27,13 +30,13 @@ struct ReportsListView: View {
                         Text("Accepted")
                     }
                     .padding()
-                    .background(Color(uiColor: .tertiarySystemBackground))
+                    .background(Color(uiColor: .secondarySystemBackground))
                     .cornerRadius(20)
                     .padding(.leading)
                     
                     VStack(alignment: .leading){
                         HStack{
-                            Text("18")
+                            Text("\(viewModel.reports.filter({!$0.isDone}).count)")
                                 .font(.title)
                                 .fontWeight(.bold)
                             Text("reports")
@@ -42,29 +45,24 @@ struct ReportsListView: View {
                         Text("In Progress")
                     }
                     .padding()
-                    .background(Color(uiColor: .tertiarySystemBackground))
+                    .background(Color(uiColor: .secondarySystemBackground))
                     .cornerRadius(20)
                     
                     VStack(alignment: .leading){
                         HStack{
-                            Text("25")
+                            Text("\(viewModel.reports.filter({$0.isDone}).count)")
                                 .font(.title)
                                 .fontWeight(.bold)
                             Text("reports")
                                 .foregroundStyle(.gray)
                         }
-                        Text("In Queue")
+                        Text("Done")
                     }
                     .padding()
-                    .background(Color(uiColor: .tertiarySystemBackground))
+                    .background(Color(uiColor: .secondarySystemBackground))
                     .cornerRadius(20)
                 }
-            }
-            .refreshable {
-                Task{
-                    await viewModel.fetchAllReports()
-                    searchPhrase = ""
-                }
+                .redacted(reason: viewModel.isDataLoaded ? .invalidated : .placeholder)
             }
             SearchView(searchText: $searchPhrase)
                 .onChange(of: searchPhrase){
@@ -82,13 +80,21 @@ struct ReportsListView: View {
             .frame(maxWidth: .infinity)
             .padding()
             
-            List {
-                if !viewModel.reports.isEmpty{
+            List{
+                if viewModel.isDataLoaded {
                     ForEach(viewModel.reports, id: \.id) { report in
                         ReportListItemView(report: report)
                             .listRowSeparator(.hidden)
                             .listRowBackground(Color.clear)
+                            .padding(.top)
+                            .onTapGesture {
+                                path.append(report)
+                            }
                     }
+                    
+                    Color.clear
+                                .frame(height: 60) 
+                                .listRowBackground(Color.clear)
                 }else{
                     ReportListItemView(report: ReportDetails())
                         .listRowSeparator(.hidden)
@@ -101,9 +107,15 @@ struct ReportsListView: View {
             .listStyle(.plain)
             .padding(.top, -10)
             .padding(.horizontal, -10)
+            .refreshable {
+                Task{
+                    await viewModel.fetchAllReports()
+                    searchPhrase = ""
+                }
+            }
         }
         .frame(maxHeight: .infinity, alignment: .top)
-        .background(Color(uiColor: .secondarySystemBackground))
+        .background(Color(uiColor: .systemBackground))
         .onAppear{
             Task{
                 await viewModel.fetchAllReports()
@@ -113,6 +125,6 @@ struct ReportsListView: View {
 }
 
 #Preview {
-    ReportsListView()
+    ReportsListView(path: .constant(NavigationPath()))
         .colorScheme(.dark)
 }

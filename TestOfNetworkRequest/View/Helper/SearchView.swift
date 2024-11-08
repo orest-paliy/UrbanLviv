@@ -18,12 +18,12 @@ struct SearchView: View {
             }
             .padding(.horizontal)
             .padding(.vertical, 12)
-            .background(Color(uiColor: .tertiarySystemBackground))
+            .background(Color(uiColor: .secondarySystemBackground))
             .cornerRadius(45)
-            Image(systemName: "slider.horizontal.3")
-                .frame(width: 46, height: 46)
-                .background(Color(uiColor: .tertiarySystemBackground))
-                .cornerRadius(45)
+//            Image(systemName: "slider.horizontal.3")
+//                .frame(width: 46, height: 46)
+//                .background(Color(uiColor: .tertiarySystemBackground))
+//                .cornerRadius(45)
         }
         .padding(.horizontal)
         .padding(.top)
