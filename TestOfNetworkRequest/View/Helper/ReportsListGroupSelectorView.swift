@@ -15,7 +15,9 @@ struct ReportsListGroupSelectorView: View {
             .font(.subheadline)
             .lineLimit(1)
             .underline(selectedGroup == typeOfGroup)
-            .foregroundStyle(selectedGroup == typeOfGroup ? .black : .gray)
+            .foregroundStyle(selectedGroup == typeOfGroup ?
+                                Color(uiColor: .label):
+                                Color(uiColor: .secondaryLabel))
             .onTapGesture {
                 selectedGroup = typeOfGroup
             }

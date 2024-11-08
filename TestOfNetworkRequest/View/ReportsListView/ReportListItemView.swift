@@ -27,57 +27,40 @@ struct ReportListItemView: View {
     var body: some View {
         VStack{
             ZStack{
-//                AsyncImage(url: URL(string: report.imageUrl), content: {image in
-//                    image
-//                        .resizable()
-//                        .aspectRatio(contentMode: .fill)
-//                        .frame(height: 175)
-//                        .cornerRadius(20)
-//                        .padding(.horizontal)
-//                    
-//                }, placeholder: {
-//                    ProgressView()
-//                        .frame(maxWidth: .infinity)
-//                        .frame(height: 175)
-//                        .background(.ultraThinMaterial)
-//                        .cornerRadius(20)
-//                        .padding(.horizontal)
-//                })
-//                .frame(maxWidth: .infinity)
-                
-                if image == nil{
-                    ProgressView()
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 175)
-                        .background(.ultraThinMaterial)
-                        .cornerRadius(20)
-                        .padding(.horizontal)
-                }else{
-                    Image(uiImage: image ?? UIImage())
+                AsyncImage(url: URL(string: report.imageUrl), content: {image in
+                    image
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(height: 175)
                         .cornerRadius(20)
-                        .padding(.horizontal)
-                }
+                    
+                }, placeholder: {
+                    ProgressView()
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 175)
+                        .background(Color(uiColor: .secondarySystemBackground))
+                        .cornerRadius(20)
+                })
+                .frame(maxWidth: .infinity)
                 
                 HStack{
                     Text(ProblemType(rawValue: report.typeOfProblem)?.title ?? ProblemType.OTHER.title)
                         .padding(.vertical, 5)
                         .padding(.horizontal, 10)
                         .font(.subheadline)
-                        .background(.white)
+                        .background(Color(uiColor: .tertiarySystemBackground))
                         .cornerRadius(20)
-                    Text(ProblemPriority(rawValue: report.priority)?.title ?? ProblemPriority.low.title)
+                    Text(report.priority)
                         .padding(.vertical, 5)
                         .padding(.horizontal, 10)
                         .font(.subheadline)
-                        .background(.white)
+                        .background(Color(uiColor: .tertiarySystemBackground))
                         .cornerRadius(20)
                 }
                 .frame(maxWidth: .infinity, maxHeight: 175, alignment: .topLeading)
-                .padding(.leading, 25)
+                .padding(.leading, 8)
                 .padding(.top)
+                .foregroundStyle(Color(uiColor: .secondaryLabel))
             }
             HStack{
                 Text(report.title)
@@ -93,13 +76,13 @@ struct ReportListItemView: View {
                         }
                     }
             }
-            .padding(.horizontal)
+            .foregroundStyle(Color(uiColor: .label))
             
             if isDescriptionShown{
                 Text(report.description)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal)
                     .lineLimit(5)
+                    .foregroundStyle(Color(uiColor: .secondaryLabel))
             }
             
             VStack(alignment: .leading){
@@ -111,8 +94,8 @@ struct ReportListItemView: View {
             .lineLimit(1)
             .font(.subheadline)
             .padding(.top, 5)
-            .padding(.horizontal)
             .frame(maxWidth: .infinity, alignment: .leading)
+            .foregroundStyle(Color(uiColor: .tertiaryLabel))
         }
     }
     
@@ -127,5 +110,5 @@ struct ReportListItemView: View {
 }
 
 #Preview {
-    ReportListItemView(report: ReportDetails(id: 1, title: "Fallen tree on the road", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ultricies tempus eros, vel mattis mauris elementum ac. Donec pellentesque urna ac nisi efficitur consequat", imageUrl: "https://4studio.com.ua/wp-content/uplods/2021/06/2021-06-13_092047-1280x720.png ", typeOfProblem: ProblemType.ROADS.rawValue, creatorId: 1, location: "Horodotska", timeOfCreation: "21.10 10:45", priority: 1, isDone: false))
+    ReportListItemView(report: ReportDetails(id: 1, title: "Fallen tree on the road", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ultricies tempus eros, vel mattis mauris elementum ac. Donec pellentesque urna ac nisi efficitur consequat", imageUrl: "https://4studio.com.ua/wp-content/uplods/2021/06/2021-06-13_092047-1280x720.png ", typeOfProblem: ProblemType.ROADS.rawValue, creatorId: 1, location: "Horodotska", timeOfCreation: "21.10 10:45", priority: "Високий", isDone: false))
 }

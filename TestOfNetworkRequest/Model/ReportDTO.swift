@@ -25,7 +25,7 @@ struct ReportDetails: Decodable, Identifiable, Hashable{
     var creatorId: Int
     var location: String
     var timeOfCreation: String
-    var priority: Int
+    var priority: String
     var isDone: Bool
     
     var typeOfProblemEnum: ProblemType{
@@ -37,6 +37,21 @@ struct ReportDetails: Decodable, Identifiable, Hashable{
     }
     enum CodingKeys: String, CodingKey {
         case id, title, description, imageUrl, typeOfProblem, creatorId, location, timeOfCreation, priority, isDone
+    }
+}
+
+extension ReportDetails{
+    init(){
+        id = 0
+        title = "title"
+        description = "somedescription"
+        imageUrl = ""
+        typeOfProblem = 1
+        creatorId = 1
+        location = "location"
+        timeOfCreation = "2024-11-08T12:28:05.8267314+02:00"
+        priority = "medium"
+        isDone = false
     }
 }
 

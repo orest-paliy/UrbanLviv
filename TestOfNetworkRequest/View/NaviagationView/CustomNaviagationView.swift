@@ -44,6 +44,7 @@ struct CustomNaviagationView: View {
         .fullScreenCover(isPresented: $isNewReportViewShown, content: {
             ReportCreationView(isViewShown: $isNewReportViewShown)
         })
+        .colorScheme(.dark)
     }
 }
 

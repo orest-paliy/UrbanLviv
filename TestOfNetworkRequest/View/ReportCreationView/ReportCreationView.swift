@@ -33,25 +33,28 @@ struct ReportCreationView: View {
                             })
                             .font(.title3)
                             .fontWeight(.bold)
-                            .foregroundStyle(.black)
+                            .foregroundStyle(.white)
                         }
                         
                         Text("Name of problem")
                             .padding(.top)
+                            .foregroundStyle(Color(uiColor: .secondaryLabel))
                         TextField("E.g. Water Leakage", text: $title)
                             .padding()
-                            .background(.ultraThinMaterial)
+                            .background(Color(uiColor: .secondarySystemBackground))
                             .cornerRadius(45)
                         
                         Text("Description of problem")
                             .padding(.top)
+                            .foregroundStyle(Color(uiColor: .secondaryLabel))
                         TextField("E.g. Water Leakage happend in..", text: $description)
                             .padding()
-                            .background(.ultraThinMaterial)
+                            .background(Color(uiColor: .secondarySystemBackground))
                             .cornerRadius(45)
                         
                         Text("Problem type")
                             .padding(.top)
+                            .foregroundStyle(Color(uiColor: .secondaryLabel))
                         HStack {
                             Picker("Problem Type", selection: $typeOfProblem) {
                                 ForEach(ProblemType.allCases, id: \.self, content: {
@@ -62,11 +65,12 @@ struct ReportCreationView: View {
                         }
                         .padding(10)
                         .frame(maxWidth: .infinity)
-                        .background(.ultraThinMaterial)
+                        .background(Color(uiColor: .secondarySystemBackground))
                         .cornerRadius(45)
                         
                         Text("Priority")
                             .padding(.top)
+                            .foregroundStyle(Color(uiColor: .secondaryLabel))
                         HStack{
                             PriorityView(selectedPriority: $priority, priority: .low)
                             PriorityView(selectedPriority: $priority, priority: .medium)
@@ -77,14 +81,15 @@ struct ReportCreationView: View {
                         
                         Text("Image")
                             .padding(.top)
+                            .foregroundStyle(Color(uiColor: .secondaryLabel))
                         
                         ZStack{
                             Image(uiImage: uiImage ?? UIImage())
                                 .resizable()
                                 .scaledToFill()
-                                .frame(maxWidth: .infinity, maxHeight: 170)
+                                .frame(maxWidth: .infinity, maxHeight: 150)
                                 .clipped()
-                                .background(.ultraThinMaterial)
+                                .background(Color(uiColor: .secondarySystemBackground))
                                 .cornerRadius(20)
                                 .allowsHitTesting(uiImage != nil)
                             if uiImage == nil{
@@ -98,7 +103,7 @@ struct ReportCreationView: View {
                                     }
                             }
                         }
-                        .frame(maxWidth: .infinity, maxHeight: 170)
+                        .frame(maxWidth: .infinity, maxHeight: 150)
                     }
                 }
                 
@@ -111,12 +116,12 @@ struct ReportCreationView: View {
                     }
                 }, label: {
                     Text("Create A Report")
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.black)
                         .fontWeight(.heavy)
                 })
                 .padding()
                 .frame(maxWidth: .infinity)
-                .background(.black)
+                .background(.white)
                 .cornerRadius(45)
                 .padding(.top)
                 
@@ -154,9 +159,11 @@ struct ReportCreationView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
+        .background(Color(uiColor: .systemBackground))
     }
 }
 
 #Preview {
     ReportCreationView(isViewShown: .constant(true))
+        .colorScheme(.dark)
 }

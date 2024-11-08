@@ -13,8 +13,10 @@ struct TestOfNetworkRequestApp: App {
         WindowGroup {
             if AuthorizationService.shared.isUserLoggined(){
                 CustomNaviagationView()
+                    .colorScheme(.dark)
             }else{
                 AuthorizationView()
+                    .colorScheme(.dark)
             }
         }
     }

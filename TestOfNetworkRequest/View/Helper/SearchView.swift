@@ -16,12 +16,13 @@ struct SearchView: View {
                 Image(systemName: "magnifyingglass")
                     .foregroundStyle(.gray)
             }
-            .padding()
-            .background(.ultraThinMaterial)
+            .padding(.horizontal)
+            .padding(.vertical, 12)
+            .background(Color(uiColor: .tertiarySystemBackground))
             .cornerRadius(45)
             Image(systemName: "slider.horizontal.3")
-                .frame(width: 50, height: 50)
-                .background(.ultraThinMaterial)
+                .frame(width: 46, height: 46)
+                .background(Color(uiColor: .tertiarySystemBackground))
                 .cornerRadius(45)
         }
         .padding(.horizontal)

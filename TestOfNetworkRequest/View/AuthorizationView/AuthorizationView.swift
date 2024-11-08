@@ -15,10 +15,14 @@ struct AuthorizationView: View {
     
     var body: some View {
         VStack(spacing: 10){
-            Text(isSignUp ? "Registration" : "Authorization")
+            Text(isSignUp ? "Registration".uppercased() : "Authorization".uppercased())
                 .font(.title2)
-                .padding()
-            VStack{
+                .fontWeight(.semibold)
+                .padding(.top, 32)
+                .padding(.bottom)
+                .foregroundStyle(Color(uiColor: .label))
+                
+            VStack(spacing: 12){
                 StyledTextField(title: "Email",
                                 value: $viewModel.email,
                                 needToBeSecured: false,
@@ -52,9 +56,6 @@ struct AuthorizationView: View {
                         .keyboardType(.alphabet)
                 }
             }
-//            .alert(isPresented: $viewModel.showAlert) {
-//                Alert(title: Text("Validation Error"), message: Text(viewModel.alertMessage ?? ""), dismissButton: .default(Text("OK")))
-//            }
             .padding(.horizontal)
             
             
@@ -86,18 +87,24 @@ struct AuthorizationView: View {
                     .padding()
                     .frame(maxWidth: .infinity)
                     .background(.blue)
-                    .cornerRadius(20)
-                    .padding(.horizontal, 60)
+                    .cornerRadius(45)
+                    .padding(.horizontal, 40)
             })
             .padding(.bottom)
         }
         .fullScreenCover(isPresented: $succesfullyAuthorized, content: {
             ReportsListView()
         })
-        .background(.red.opacity(0.2))
-        .cornerRadius(20)
+        .background(Color(uiColor: .secondarySystemBackground))
+        .cornerRadius(45)
+        .overlay(content: {
+            RoundedRectangle(cornerRadius: 45)
+                .stroke(Color(uiColor: .tertiarySystemBackground), style: StrokeStyle(lineWidth: 4, dash: [10, 5]))
+        })
         .padding()
+       
     }
+    
 }
 
 #Preview {

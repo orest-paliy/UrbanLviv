@@ -15,7 +15,7 @@ struct PriorityView: View {
             selectedPriority = priority
         })
         .padding()
-        .background(.ultraThinMaterial)
+        .background(Color(uiColor: .secondarySystemBackground))
         .cornerRadius(45)
         .foregroundStyle(selectedPriority == priority ? .blue : .gray)
     }

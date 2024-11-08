@@ -22,14 +22,16 @@ struct QuestionView: View {
                         showDescription.toggle()
                     }
                 }
-                .foregroundStyle(.black)
+                .foregroundStyle(.white)
             }
+            .fontWeight(.regular)
             if showDescription{
                 Text(description)
                     .padding(.top, 4)
+                    .font(.system(size: 15))
+                    .foregroundStyle(Color(uiColor: .secondaryLabel))
             }
         }
-        .font(.system(size: 15))
     }
     
     init(title: String, description: String) {

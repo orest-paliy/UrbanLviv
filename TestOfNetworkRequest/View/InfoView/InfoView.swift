@@ -24,6 +24,8 @@ struct InfoView: View {
                     QuestionView(title: "What is UrbanLviv?", description: "")
                 })
             })
+            .scrollContentBackground(.hidden)
+            .background(Color.clear)
             .cornerRadius(20)
             
             Spacer()
@@ -33,7 +35,7 @@ struct InfoView: View {
                     .fontWeight(.bold)
                 
                 Text("Send us a message and we’ll reply \nas soon as we can!")
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(Color(uiColor: .secondaryLabel))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
@@ -43,15 +45,18 @@ struct InfoView: View {
             }
             .padding()
             .frame(maxWidth: .infinity)
-            .background(.black)
+            .background(Color(uiColor: .white))
             .cornerRadius(45)
             .padding(.horizontal)
-            .foregroundStyle(.white)
+            .foregroundStyle(.black)
+            .fontWeight(.bold)
             .padding(.bottom, 80)
         }
+        .background(Color(uiColor: .systemBackground))
     }
 }
 
 #Preview {
     InfoView()
+        .colorScheme(.dark)
 }

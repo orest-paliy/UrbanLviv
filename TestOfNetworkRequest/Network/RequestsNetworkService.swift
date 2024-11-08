@@ -14,7 +14,7 @@ final class RequestsNetworkService{
         endPoint = "http://\(hostId)/api/Report"
     }
     
-    private let hostId = "6d98-2a02-2378-1061-e4f1-d821-b5ad-5aa4-52be.ngrok-free.app"
+    private let hostId = "54.174.171.216"
     private let endPoint: String
     
     func getAllReports() async throws -> [ReportDetails]{
@@ -23,14 +23,15 @@ final class RequestsNetworkService{
         guard let url = URL(string: endPoint + methodTag) else{ throw NetworkError.BadURL}
         
         let (data, responce) = try await URLSession.shared.data(from: url)
-        
         guard let httpResponce = responce as? HTTPURLResponse, httpResponce.statusCode == 200 else{
             throw NetworkError.BadRequest
         }
         do{
             let result = try JSONDecoder().decode([ReportDetails].self, from: data)
+            print(result.count)
             return result
         }catch {
+            print(error)
             throw NetworkError.BadData
         }
     }
@@ -46,9 +47,6 @@ final class RequestsNetworkService{
         
         do {
             let (data, respoce) = try await URLSession.shared.upload(for: request, from: encoded)
-            print(respoce)
-            //let info = try JSONDecoder().decode(ServerResponse.self, from: data)
-            //print(info.message)
         } catch {
             print("Checkout failed: \(error.localizedDescription)")
         }

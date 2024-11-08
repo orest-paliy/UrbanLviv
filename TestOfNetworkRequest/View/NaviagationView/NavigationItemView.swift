@@ -15,11 +15,14 @@ struct NavigationItemView: View {
             currentPage = type
         }){
             Image(systemName: type.rawValue)
-                .foregroundStyle(type == .createReportPage ? .white : .black)
+                .foregroundStyle(type == .createReportPage ?
+                    .black : Color(uiColor: .secondaryLabel))
                 .fontWeight(.bold)
         }
         .frame(width: 50, height: 50)
-        .background(type == .createReportPage ? .black : .white)
+        .background(type == .createReportPage ?
+                    Color(uiColor: .white) :
+                        Color(uiColor: .systemBackground))
         .cornerRadius(90)
     }
 }

@@ -48,5 +48,5 @@ struct ReportReviewView: View {
 }
 
 #Preview {
-    ReportReviewView(currentReport: .constant(ReportDetails(id: 1, title: "Name", description: "description", imageUrl: "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg", typeOfProblem: 1, creatorId: 123, location: "Lviv", timeOfCreation: "21.09.2024", priority: 1, isDone: false)))
+    ReportReviewView(currentReport: .constant(ReportDetails(id: 1, title: "Name", description: "description", imageUrl: "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg", typeOfProblem: 1, creatorId: 123, location: "Lviv", timeOfCreation: "21.09.2024", priority: "Високий", isDone: false)))
 }

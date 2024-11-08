@@ -42,14 +42,14 @@ struct StyledTextField: View {
                         Image(systemName: isSecureModeOn ? "eye.slash" : "eye")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(maxWidth: 25,maxHeight: 60)
+                            .frame(maxWidth: 20,maxHeight: 20)
                             .padding(.trailing)
                             .foregroundStyle(.gray)
                     })
                 }
             }
-            .background(.gray.opacity(0.2))
-            .cornerRadius(20)
+            .background(Color(uiColor: .tertiarySystemBackground))
+            .cornerRadius(45)
             
              if !viewModel.validationError.isEmpty {
                 Text(viewModel.validationError)

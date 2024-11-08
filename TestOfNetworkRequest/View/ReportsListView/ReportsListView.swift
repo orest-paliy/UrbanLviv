@@ -11,12 +11,8 @@ struct ReportsListView: View {
     @StateObject private var viewModel = ReportListViewModel()
     @State private var searchPhrase = ""
     @State private var selectedGroupOfreports = ReportsListGroupSelectorView.SearchGroup.all
-    var body: some View {
+    var body: some View{
         VStack(alignment: .leading){
-            Text("Good afternoon,\nUserName!")
-                .font(.title)
-                .fontWeight(.bold)
-                .padding(.horizontal)
             //TODO: Remake on SigleViews with api call
             ScrollView(.horizontal, showsIndicators: false){
                 HStack(spacing: 20){
@@ -31,7 +27,7 @@ struct ReportsListView: View {
                         Text("Accepted")
                     }
                     .padding()
-                    .background(.ultraThinMaterial)
+                    .background(Color(uiColor: .tertiarySystemBackground))
                     .cornerRadius(20)
                     .padding(.leading)
                     
@@ -46,7 +42,7 @@ struct ReportsListView: View {
                         Text("In Progress")
                     }
                     .padding()
-                    .background(.ultraThinMaterial)
+                    .background(Color(uiColor: .tertiarySystemBackground))
                     .cornerRadius(20)
                     
                     VStack(alignment: .leading){
@@ -60,7 +56,7 @@ struct ReportsListView: View {
                         Text("In Queue")
                     }
                     .padding()
-                    .background(.ultraThinMaterial)
+                    .background(Color(uiColor: .tertiarySystemBackground))
                     .cornerRadius(20)
                 }
             }
@@ -86,26 +82,37 @@ struct ReportsListView: View {
             .frame(maxWidth: .infinity)
             .padding()
             
-            List{
-                ForEach(viewModel.reports, content: {
-                ReportListItemView(report: $0)
-                })
-                .listRowSeparator(.hidden)
+            List {
+                if !viewModel.reports.isEmpty{
+                    ForEach(viewModel.reports, id: \.id) { report in
+                        ReportListItemView(report: report)
+                            .listRowSeparator(.hidden)
+                            .listRowBackground(Color.clear)
+                    }
+                }else{
+                    ReportListItemView(report: ReportDetails())
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
+                        .redacted(reason: .placeholder)
+                }
             }
+            .scrollContentBackground(.hidden)
+            .background(Color(uiColor: .systemBackground))
             .listStyle(.plain)
-            .foregroundStyle(.black)
             .padding(.top, -10)
+            .padding(.horizontal, -10)
         }
         .frame(maxHeight: .infinity, alignment: .top)
+        .background(Color(uiColor: .secondarySystemBackground))
         .onAppear{
             Task{
                 await viewModel.fetchAllReports()
             }
         }
     }
-    
 }
 
 #Preview {
     ReportsListView()
+        .colorScheme(.dark)
 }
