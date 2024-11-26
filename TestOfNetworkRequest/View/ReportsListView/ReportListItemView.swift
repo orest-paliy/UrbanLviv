@@ -110,5 +110,5 @@ struct ReportListItemView: View {
 }
 
 #Preview {
-    ReportListItemView(report: ReportDetails(id: 1, title: "Fallen tree on the road", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ultricies tempus eros, vel mattis mauris elementum ac. Donec pellentesque urna ac nisi efficitur consequat", imageUrl: "https://4studio.com.ua/wp-content/uplods/2021/06/2021-06-13_092047-1280x720.png ", typeOfProblem: ProblemType.ROADS.rawValue, creatorId: 1, location: "Horodotska", timeOfCreation: "21.10 10:45", priority: "Високий", isDone: false))
+    ReportListItemView(report: ReportDetails(id: 1, title: "Fallen tree on the road", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ultricies tempus eros, vel mattis mauris elementum ac. Donec pellentesque urna ac nisi efficitur consequat", imageUrl: "https://4studio.com.ua/wp-content/uplods/2021/06/2021-06-13_092047-1280x720.png ", typeOfProblem: ProblemType.ROADS.rawValue, creatorId: 1, location: "Horodotska", timeOfCreation: "21.10 10:45", priority: "Високий", isDone: false,officialSummary: ""))
 }

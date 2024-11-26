@@ -12,6 +12,7 @@ struct CustomNaviagationView: View {
     @State private var isNewReportViewShown = false
     @State private var path = NavigationPath()
     
+    @Binding var isUserLoggined: Bool
     var body: some View {
         NavigationStack(path: $path){
             ZStack{
@@ -19,7 +20,7 @@ struct CustomNaviagationView: View {
                 case .homePage:
                     ReportsListView(path: $path)
                 case .accountPage:
-                    Text("profilePage")
+                    AccountView(isUserLoggined: $isUserLoggined)
                 case .infoPage:
                     InfoView()
                 case .createReportPage:
@@ -57,5 +58,5 @@ struct CustomNaviagationView: View {
 }
 
 #Preview {
-    CustomNaviagationView()
+    CustomNaviagationView(isUserLoggined: .constant(true))
 }

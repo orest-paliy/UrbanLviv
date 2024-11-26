@@ -26,19 +26,18 @@ struct ReportReviewView: View {
     var body: some View {
         VStack(alignment: .leading){
             AsyncImage(url: URL(string: currentReport.imageUrl)) { image in
-                ZStack{
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(maxWidth: .infinity, maxHeight: 270)
-                }
+                        .frame(maxWidth: 400,maxHeight: 270)
+                        .clipped()
             } placeholder: {
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: 270)
             }
             VStack(alignment: .leading){
                 LocationMapView(query: currentReport.location)
-                    .frame(width: .infinity, height: 270)
+                    .frame(height: 270)
                     .mask(
                         LinearGradient(
                             gradient: Gradient(colors: [Color.black, Color.black, Color.clear, Color.clear]),
@@ -50,36 +49,58 @@ struct ReportReviewView: View {
                     .cornerRadius(20)
                     .padding(.horizontal)
                     .shadow(radius: 1, y: -5)
+                    .scrollClipDisabled()
                 VStack(alignment: .leading, spacing: 8){
-                   
+                    
                     Text(currentReport.title)
                         .font(.title2)
                         .fontWeight(.semibold)
                     Text(currentReport.description)
-                    Text("Тип проблеми: \(currentReport.typeOfProblemEnum.title)")
-                        .foregroundStyle(Color(uiColor: .secondaryLabel))
-                    Text("Пріорітет розгялу: \(currentReport.priority)")
-                        .foregroundStyle(Color(uiColor: .secondaryLabel))
-                    Spacer()
-                    VStack(alignment: .leading){
-                        
-                        HStack{
-                            Label(currentReport.location, systemImage: "mappin.and.ellipse")
-                            Spacer()
-                            if let date = date{
-                                Label(date, systemImage: "clock")
+//                    Text("Тип проблеми: \(currentReport.typeOfProblemEnum.title)")
+//                        .foregroundStyle(Color(uiColor: .secondaryLabel))
+//                    Text("Пріоритет розгялу: \(currentReport.priority)")
+//                        .foregroundStyle(Color(uiColor: .secondaryLabel))
+                    
+                    
+                    ScrollView{
+                        VStack(spacing: 20){
+                            VStack(alignment: .leading){
+                                HStack{
+                                    Image("chatGPT")
+                                        .resizable()
+                                        .frame(width: 40, height: 40)
+                                    Text("ChatGPT summary")
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .opacity(0.7)
+                                TypingTextView(fullText: currentReport.officialSummary)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
                             }
-                        }
-                        
-                        HStack{
-                            Label(currentReport.isDone ? "Done" :"In progress",
-                                  systemImage: currentReport.isDone ? "checkmark" : "progress.indicator")
-                            Spacer()
-                            Label("Creator id: \(currentReport.creatorId)", systemImage: "person")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color(uiColor: .secondarySystemBackground))
+                            .cornerRadius(20)
+                            
+                            VStack(alignment: .leading){
+                                
+                                HStack{
+                                    Label(currentReport.location, systemImage: "mappin.and.ellipse")
+                                    Spacer()
+                                    if let date = date{
+                                        Label(date, systemImage: "clock")
+                                    }
+                                }
+                                
+                                HStack{
+                                    Label(currentReport.isDone ? "Done" :"In progress",
+                                          systemImage: currentReport.isDone ? "checkmark" : "progress.indicator")
+                                    Spacer()
+                                    Label("Creator id: \(currentReport.creatorId)", systemImage: "person")
+                                }
+                            }
+                            .foregroundStyle(Color(uiColor: .tertiaryLabel))
                         }
                     }
-                    .foregroundStyle(Color(uiColor: .tertiaryLabel))
-                    .padding(.top, -220)
                 }
                 .padding(.horizontal, 32)
                 .padding(.vertical, -120)
@@ -88,7 +109,9 @@ struct ReportReviewView: View {
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .ignoresSafeArea()
+        .colorScheme(.dark)
     }
+    
 }
 
 #Preview {

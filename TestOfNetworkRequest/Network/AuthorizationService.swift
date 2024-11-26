@@ -14,7 +14,7 @@ final class AuthorizationService{
         endPoint = "http://\(hostId)/api/Auth"
     }
     
-    private let hostId = "54.198.224.235"
+    private let hostId = "54.174.171.216"
     private let endPoint: String
     
     func signUp(newUser: UserRegister) async throws -> Bool{
@@ -80,5 +80,9 @@ final class AuthorizationService{
         guard let _ = UserDefaults.standard.object(forKey: "userId")
             else{return false}
         return true
+    }
+    
+    func logOut(){
+        UserDefaults.standard.removeObject(forKey: "userId")
     }
 }

@@ -13,6 +13,8 @@ struct AuthorizationView: View {
     @State var succesfullyAuthorized = false
     @State var needToBeValidated = false
     
+    @Binding var isUserLoggined: Bool
+    
     var body: some View {
         VStack(spacing: 10){
             Text(isSignUp ? "Registration".uppercased() : "Authorization".uppercased())
@@ -79,6 +81,7 @@ struct AuthorizationView: View {
                     Task{
                         await viewModel.signIn()
                         succesfullyAuthorized = viewModel.successedSignIn
+                        isUserLoggined = succesfullyAuthorized
                     }
                 }
             }, label: {
@@ -92,9 +95,7 @@ struct AuthorizationView: View {
             })
             .padding(.bottom)
         }
-        .fullScreenCover(isPresented: $succesfullyAuthorized, content: {
-            CustomNaviagationView()
-        })
+        .colorScheme(.dark)
         .background(Color(uiColor: .secondarySystemBackground))
         .cornerRadius(45)
         .overlay(content: {
@@ -102,12 +103,11 @@ struct AuthorizationView: View {
                 .stroke(Color(uiColor: .tertiarySystemBackground), style: StrokeStyle(lineWidth: 4, dash: [10, 5]))
         })
         .padding()
-       
     }
     
 }
 
 #Preview {
-    AuthorizationView()
+    AuthorizationView(isUserLoggined: .constant(true))
     
 }

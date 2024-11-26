@@ -9,13 +9,16 @@ import SwiftUI
 
 @main
 struct TestOfNetworkRequestApp: App {
+    @State var isUserLoggined = AuthorizationService.shared.isUserLoggined()
     var body: some Scene {
         WindowGroup {
-            if AuthorizationService.shared.isUserLoggined(){
-                CustomNaviagationView()
+            if isUserLoggined{
+                CustomNaviagationView(isUserLoggined: $isUserLoggined)
                     .colorScheme(.dark)
             }else{
-                AuthorizationView()
+                AuthorizationView(isUserLoggined: $isUserLoggined)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(.black)
                     .colorScheme(.dark)
             }
         }

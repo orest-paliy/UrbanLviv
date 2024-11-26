@@ -24,12 +24,14 @@ final class AuthorizationViewModel: ObservableObject{
     func signUp()async{
         if validateFields(isSignUp: true, email: email, password: password, firstName: firstName, lastName: lastName, phone: phone){
             let user = UserRegister(email: email, password: password, firstName: firstName, lastName: lastName, phone: phone)
-            
+            print("we were here")
             do{
                 successedSignUp = try await AuthorizationService.shared.signUp(newUser: user)
+                print("we were here2")
+
                 clearAllFields()
             }catch{
-                print(error)
+                print("error \(error)")
                 self.error = error as? NetworkError
             }
         }
